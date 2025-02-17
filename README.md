@@ -8,10 +8,6 @@ Each commit in the repository represents a step in the evolution of the projects
 
 Here you can find [complete syllabus](https://feather-paradox-11d.notion.site/Backend-Engineer-Cohort-1-0-1735c1244fa48006b70feef4ae6d7a9f) link.
 
-##### Complete syllabus link:
-
-https://feather-paradox-11d.notion.site/Backend-Engineer-Cohort-1-0-1735c1244fa48006b70feef4ae6d7a9f
-
 ## How to Use This Repository
 
 1. **Clone the Repository:**
