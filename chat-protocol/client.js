@@ -18,24 +18,24 @@ async function startChat() {
             host: HOST,
             port: PORT,
         },
-        () => {
+        async () => {
             console.log('Connected to the server');
+            // Get username
+            const username = await rl.question('Enter username: ');
+            // Get Token
+            const token = await rl.question('Enter token: ');
+        
+            // Prepare auth command
+            const authCommand = buildCommand(
+                'AUTH',
+                { User: username, Token: token, 'content-length': 0 },
+                ''
+            );
+        
+            client.write(authCommand);
         }
     );
 
-    // Get username
-    const username = await rl.question('Enter username: ');
-    // Get Token
-    const token = await rl.question('Enter token: ');
-
-    // Prepare auth command
-    const authCommand = buildCommand(
-        'AUTH',
-        { User: username, Token: token, 'content-length': 0 },
-        ''
-    );
-
-    client.write(authCommand);
 
     client.on('data', (data) => {
         console.log('Received: ', data.toString());
