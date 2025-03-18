@@ -4,13 +4,13 @@ import net from 'node:net';
 const HOST = 'localhost';
 const PORT = 1337;
 
-async function startChat() {
     // User interface
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
-        prompt: '>',
+    prompt: '> ',
     });
+async function startChat() {
 
     // Open a TCP connection
     const client = net.createConnection(
@@ -28,7 +28,7 @@ async function startChat() {
             // Prepare auth command
             const authCommand = buildCommand(
                 'AUTH',
-                { User: username, Token: token, 'content-length': 0 },
+                { User: username, Token: token, 'Content-Length': 0 },
                 ''
             );
         
