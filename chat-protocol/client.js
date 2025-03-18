@@ -184,4 +184,9 @@ async function handleJoin(client, message){
     }
 }
 
+async function handleBroadcastedMsg(client, message){
+    console.log('\r' + `${message.headers.User}: ${message.body}`);
+    rl.prompt();
+}
+
 startChat();
