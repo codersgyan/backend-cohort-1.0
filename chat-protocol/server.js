@@ -26,7 +26,7 @@ const server = net.createServer((socket) => {
     socket.on('end', () => {
         console.log('Client disconnected.');
         if(!socket.writableEnded) {
-            socket.end(            );
+            socket.end();
         }
         removeClient(socket);
     });
