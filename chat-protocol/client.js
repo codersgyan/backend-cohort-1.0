@@ -37,8 +37,42 @@ async function startChat() {
     );
 
 
-    client.on('data', (data) => {
-        console.log('Received: ', data.toString());
+    client.on('data', async (data) => {
+        const message = parseMessage(data.toString());
+        if (!message) {
+            console.error('Received an invalid message format from the server.');
+            return;
+        }
+        if (message.statusMessage === 'ERROR') {
+            console.error(`Server Error: ${message.headers?.Error || 'Unknown error'}`);
+            return;
+        }
+        handleMessage(client, message);
+    });
+
+    client.on('end', () => {
+        console.log('Connection closed');
+        rl.close();
+        process.exit(0);
+    });
+
+    rl.on('line', (input) => {
+        if (input.trim().toLowerCase() === 'exit') {
+            const leaveCommand = buildCommand(
+                'LEAVE',
+                { 'Content-Length': 0 },
+                ''
+            );
+            client.write(leaveCommand);
+            return;
+        }
+        const sendCommand = buildCommand(
+            'SEND',
+            { 'Content-Length': Buffer.byteLength(input, 'utf8') },
+            input
+        );
+        client.write(sendCommand);
+        rl.prompt();
     });
 }
 
