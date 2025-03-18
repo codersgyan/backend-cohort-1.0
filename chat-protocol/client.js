@@ -171,4 +171,17 @@ async function handleAuth(client, message){
     }
 }
 
+async function handleJoin(client, message){
+    if(message.statusMessage === 'OK'){
+        console.log(`\n====================================`);
+        console.log(`Welcome to the group chat!`);
+        console.log(`Continue chatting and type 'exit' to leave.`);
+        console.log(`====================================\n`);
+        rl.prompt();
+    } else if(message.statusMessage === 'MESSAGE'){
+        console.log(message.body);
+        rl.prompt();
+    }
+}
+
 startChat();
