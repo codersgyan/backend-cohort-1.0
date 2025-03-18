@@ -156,4 +156,19 @@ function handleMessage(client, message) {
     }
 }
 
+
+async function handleAuth(client, message){
+    const userSelected = await rl.question('Please choose an option:\n[1] Join the group chat\n[2] Leave\n');
+    if(userSelected === '1'){
+        const joinCommand = buildCommand(
+            'JOIN',
+            { 'Content-Length': 0 },
+            ''
+        );
+        client.write(joinCommand);
+    } else {
+        client.end();
+    }
+}
+
 startChat();
