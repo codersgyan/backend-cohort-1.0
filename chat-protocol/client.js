@@ -4,12 +4,12 @@ import net from 'node:net';
 const HOST = 'localhost';
 const PORT = 1337;
 
-    // User interface
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
+// User interface
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
     prompt: '> ',
-    });
+});
 async function startChat() {
 
     // Open a TCP connection
@@ -187,6 +187,15 @@ async function handleJoin(client, message){
 async function handleBroadcastedMsg(client, message){
     console.log('\r' + `${message.headers.User}: ${message.body}`);
     rl.prompt();
+}
+
+async function handleLeave(client, message){
+    if(message.statusMessage === 'OK'){
+        client.end();
+    } else if(message.statusMessage === 'MESSAGE'){
+        console.log(message.body);
+        rl.prompt();
+    }
 }
 
 startChat();
