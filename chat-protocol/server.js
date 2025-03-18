@@ -147,7 +147,7 @@ function handleAuth(socket, message) {
             )
         );
         console.log(`Authentication failed for user ${user || 'unknown'}.`);
-        socket.end();
+        socket.write(formatResponse('OK', 'LEAVE', { 'Content-Length': 0 }, ''));
     }
 }
 
