@@ -97,5 +97,43 @@ function buildCommand(command, headers, body) {
 
     return `${startLine}\r\n${headerLines.join('\r\n')}\r\n\r\n${body}`;
 }
+function parseMessage(data) {
+    const parts = data.split('\r\n\r\n');
+    if (parts.length < 2) return null; // Missing body delimiter
+
+    const headerPart = parts[0];
+    const body = parts.slice(1).join('\r\n\r\n');
+    const headerLines = headerPart.split('\r\n');
+    if (headerLines.length === 0) return null;
+
+    const firstLineTokens = headerLines[0].split(' ');
+    if (firstLineTokens.length < 2) return null;
+    const protocolVersion = firstLineTokens[0]; // Should be CHAT/1.0
+    const statusMessage = firstLineTokens[1];
+
+    const headers = {};
+    let contentLength = 0;
+    for (let i = 1; i < headerLines.length; i++) {
+        const line = headerLines[i];
+        const idx = line.indexOf(':');
+        if (idx > -1) {
+            const key = line.substring(0, idx).trim();
+            const value = line.substring(idx + 1).trim();
+            headers[key] = value;
+            if (key.toLowerCase() === 'content-length') {
+                contentLength = parseInt(value, 10);
+            }
+        }
+    }
+
+    // Optionally, check that body length matches Content-Length.
+    if (body.length !== contentLength) {
+        console.warn(
+            `Warning: body length (${body.length}) does not match Content-Length (${contentLength}).`
+        );
+    }
+
+    return { protocolVersion, statusMessage, headers, body };
+}
 
 startChat();
