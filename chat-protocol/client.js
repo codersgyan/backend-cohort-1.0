@@ -97,6 +97,7 @@ function buildCommand(command, headers, body) {
 
     return `${startLine}\r\n${headerLines.join('\r\n')}\r\n\r\n${body}`;
 }
+
 function parseMessage(data) {
     const parts = data.split('\r\n\r\n');
     if (parts.length < 2) return null; // Missing body delimiter
@@ -134,6 +135,25 @@ function parseMessage(data) {
     }
 
     return { protocolVersion, statusMessage, headers, body };
+}
+
+function handleMessage(client, message) {
+    switch (message.headers['Response-For']) {
+        case 'AUTH':
+            handleAuth(client, message);
+            break;
+        case 'JOIN':
+            handleJoin(client, message);
+            break;
+        case 'SEND':
+            handleBroadcastedMsg(client, message);
+            break;
+        case 'LEAVE':
+            handleLeave(client, message);
+            break;
+        default:
+            console.log('Something went wrong!');
+    }
 }
 
 startChat();
