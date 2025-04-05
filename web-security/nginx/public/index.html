@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codersgyan - Course Platform</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FFD700;
+      --primary-dark: #DAA520;
+      --secondary: #B8860B;
+      --dark: #1a1a12;
+      --background: #FFFBE6;
+      --text: #333333;
+      --card-bg: #FFF8DC;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--background);
+    }
+
+    .navbar {
+      background-color: var(--dark);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-dark);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      padding: 8rem 2rem 4rem;
+      text-align: center;
+      color: var(--dark);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .course-container {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 2rem auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--primary-dark);
+    }
+
+    .review-form {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 6px;
+      margin-top: 2rem;
+      border: 1px solid var(--primary-dark);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      background: var(--background);
+      border: 1px solid var(--primary-dark);
+      border-radius: 4px;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 5px rgba(218, 165, 32, 0.3);
+    }
+
+    .btn {
+      background-color: var(--primary);
+      color: var(--dark);
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .reviews-section {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: white;
+      border-radius: 6px;
+      border: 1px solid var(--primary-dark);
+    }
+
+    .review-card {
+      background: var(--card-bg);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .review-metadata {
+      font-size: 0.9rem;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer {
+      background-color: var(--dark);
+      color: var(--primary);
+      padding: 2rem;
+      text-align: center;
+      margin-top: 4rem;
+      border-top: 3px solid var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .course-container {
+        margin: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <a href="#" class="logo">Codersgyan</a>
+    <div class="nav-links">
+      <a href="#">Courses</a>
+      <a href="#">Reviews</a>
+      <a href="#">Community</a>
+      <a onclick="login()" href="#">Login</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>Backend Cohort 1.0</h1>
+  </div>
+
+  <div class="course-container">
+    <h2>Course Reviews</h2>
+
+    <div class="review-form">
+      <h3>Search Reviews</h3>
+      <input type="text" id="searchTerm" class="input-field" placeholder="Search in reviews...">
+      <button class="btn" onclick="searchReviews()">Search</button>
+    </div>
+
+    <div id="searchResults" class="reviews-section"></div>
+
+    <div id="reviewsContainer" class="reviews-section">
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 Codersgyan. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let reviews = [
+      {
+        name: "Rakesh K",
+        content: "Great FullStack course! Indeed it was meant for the working professionals",
+        date: "2025-02-19"
+      }
+    ];
+
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+      const searchQuery = params.get('search');
+      if (searchQuery) {
+        document.getElementById('searchTerm').value = searchQuery;
+        searchReviews();
+      }
+    }
+
+
+    function searchReviews() {
+      const term = document.getElementById("searchTerm").value;
+      const results = document.getElementById("searchResults");
+      results.innerHTML = `<h3>Search Results for: ${term}</h3>`;
+
+      const matchingReviews = reviews.filter(review =>
+        review.content.toLowerCase().includes(term.toLowerCase()) ||
+        review.name.toLowerCase().includes(term.toLowerCase())
+      );
+
+      matchingReviews.forEach(review => {
+        results.innerHTML += `
+                    <div class="review-card">
+                        <div class="review-metadata">
+                            <strong>${review.name}</strong> - ${review.date}
+                        </div>
+                        ${review.content}
+                    </div>
+                `;
+      });
+    }
+
+    function displayReviews() {
+      const container = document.getElementById("reviewsContainer");
+      container.innerHTML = "";
+
+      reviews.forEach(review => {
+        container.innerHTML += `
+                    <div class="review-card">
+                        <div class="review-metadata">
+                            <strong>${review.name}</strong> - ${review.date}
+                        </div>
+                        ${review.content}
+                    </div>
+                `;
+      });
+    }
+
+    // Initial display
+    displayReviews();
+
+    async function login() {
+
+      try {
+        const res = await fetch("https://api.codersgyan.test/login", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+
+          },
+          body: JSON.stringify({ email: 'user@example.com', password: "password123" })
+        })
+
+        const data = await res.json()
+        console.log(data)
+      } catch (eeror) {
+        console.error(error)
+      }
+
+    }
+
+  </script>
+</body>
+
+</html>
