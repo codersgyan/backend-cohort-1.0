@@ -13,6 +13,12 @@ export function fetchData(userId) {
 
 // Dependency Injection
 
+
+
+
+
+
+
 export function processOrder(data, dependencies) {
     // some logic...
 
@@ -28,10 +34,3 @@ function processPayment(amount) {
     return { id: '123', amount: amount };
 }
 
-export function greet(name) {
-    return `Hello, ${name}!`;
-}
-
-export function greetInRussian(name) {
-    return `Привет, ${name}!`;
-}
