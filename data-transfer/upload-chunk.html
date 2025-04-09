@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <input type="file" id="file-input" />
+    <button id="upload-button">Upload in Chunks</button>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const uploadButton = document.getElementById('upload-button');
+
+        uploadButton.addEventListener('click', async () => {
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file first!');
+                return;
+            }
+
+            const chunkSize = 5 * 1024 * 1024; // 5MB
+            const totalChunks = Math.ceil(file.size / chunkSize);
+            const uploadId = Date.now().toString(); // Or any unique ID (UUID)
+
+            for (let i = 0; i < totalChunks; i++) {
+                const start = i * chunkSize;
+                const end = Math.min(file.size, start + chunkSize);
+                const chunk = file.slice(start, end);
+
+                const formData = new FormData();
+                formData.append('chunkIndex', i);
+                formData.append('totalChunks', totalChunks);
+                formData.append('fileName', file.name);
+                formData.append('uploadId', uploadId);
+                formData.append('chunk', chunk);
+
+                await fetch('http://localhost:3000/upload-chunk', {
+                    method: 'POST',
+                    body: formData,
+                }).then(r => r.json()).then(console.log);
+            }
+
+            alert('All chunks uploaded. Server should merge the file now!');
+        });
+    </script>
+</body>
+
+</html>
