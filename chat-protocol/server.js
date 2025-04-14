@@ -25,12 +25,8 @@ const server = net.createServer((socket) => {
 
     socket.on('end', () => {
         console.log('Client disconnected.');
-        if (socket.joined) {
-            // Broadcast departure if client had joined.
-            broadcast(
-                createServerMessage(`${socket.username} has left the chat.`, 'LEAVE'),
-                socket
-            );
+        if(!socket.writableEnded) {
+            socket.end();
         }
         removeClient(socket);
     });
@@ -151,7 +147,7 @@ function handleAuth(socket, message) {
             )
         );
         console.log(`Authentication failed for user ${user || 'unknown'}.`);
-        socket.end();
+        socket.write(formatResponse('OK', 'LEAVE', { 'Content-Length': 0 }, ''));
     }
 }
 
