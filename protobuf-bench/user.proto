@@ -1,0 +1,11 @@
+syntax = "proto3";
+option go_package = "./userpb";
+
+message User {
+  int32 id = 1;
+  string username = 2;
+  string email = 3;
+  bool is_active = 4;
+  repeated string roles = 5;
+  int64 signup_timestamp = 6;
+}

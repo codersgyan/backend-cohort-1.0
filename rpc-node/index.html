@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JSON-RPC Client</title>
+    <script>
+        async function callMethod(method, params) {
+            const response = await fetch('http://localhost:3000', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jsonrpc: '2.0',
+                    method,
+                    params,
+                    id: Date.now(),
+                }),
+            });
+
+            const data = await response.json();
+            document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>JSON-RPC Calculator</h1>
+    <button onclick="callMethod('multiply', [6, 7])">Multiply 6 × 7</button>
+    <button onclick="callMethod('divide', [42, 6])">Divide 42 ÷ 6</button>
+    <pre id="output"></pre>
+
+
+</body>
+
+</html>
