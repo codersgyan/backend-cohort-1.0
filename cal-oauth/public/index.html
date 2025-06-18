@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Upcoming Events</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+        }
+
+        button {
+            padding: .5rem 1rem;
+            font-size: 1rem;
+        }
+
+        li {
+            margin-bottom: .5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Next 10 Google Calendar Events</h1>
+    <button id="auth-btn">Connect Google Calendar</button>
+    <ul id="events"></ul>
+
+    <script>
+        const btn = document.getElementById('auth-btn')
+        const list = document.getElementById('events')
+
+        // When clicked, start the OAuth flow
+        btn.addEventListener('click', () => {
+            window.location.href = '/auth'
+        })
+
+        // Try loading events; if 401, leave button visible
+        async function loadEvents() {
+            const res = await fetch('/events')
+            if (!res.ok) return
+
+            const events = await res.json()
+            if (!events.length) {
+                list.innerHTML = '<li>No upcoming events found.</li>'
+            } else {
+                list.innerHTML = events
+                    .map(e => `<li><strong>${new Date(e.start).toLocaleString()}</strong> — ${e.summary}</li>`)
+                    .join('')
+            }
+
+            // hide the connect button once we’ve got events
+            btn.style.display = 'none'
+        }
+
+        loadEvents()
+    </script>
+</body>
+
+</html>
